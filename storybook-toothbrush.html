@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>뽀득뽀득 양치 대작전 — 시리즈 2화 | HiJean Kim</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+    background: linear-gradient(180deg, #eaf6ff 0%, #dcecff 100%);
+    color: #33394a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 4% 4rem;
+  }
+
+  :root {
+    --mom:    #7c5cbf;
+    --child:  #3ea0c9;
+    --ink:    #33394a;
+    --muted:  #737e94;
+    --card:   #fbfeff;
+    --border: rgba(124,92,191,0.2);
+  }
+
+  .top-bar {
+    width: 100%; max-width: 760px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .back-link {
+    color: var(--mom); text-decoration: none; font-size: 0.9rem; font-weight: 600;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  .series-nav {
+    width: 100%; max-width: 760px; display: flex; justify-content: space-between;
+    gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; font-size: 0.85rem;
+  }
+  .series-nav a { color: var(--mom); text-decoration: none; font-weight: 600; }
+  .series-nav a:hover { text-decoration: underline; }
+
+  .book-header { text-align: center; margin-bottom: 2rem; }
+  .book-tag {
+    display: inline-block; font-size: 0.75rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--child); margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+  .book-title {
+    font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 800; color: var(--ink);
+  }
+  .book-sub { color: var(--muted); margin-top: 0.5rem; font-size: 0.95rem; }
+
+  .book {
+    width: 100%; max-width: 760px;
+    background: var(--card);
+    border-radius: 28px;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(124,92,191,0.15);
+    overflow: hidden;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .illustration { width: 100%; aspect-ratio: 4 / 3; background: #eef7fb; display: block; }
+
+  .page-body { padding: 1.75rem 1.75rem 1.25rem; }
+  .page-title {
+    font-size: 1.15rem; font-weight: 800; color: var(--mom); margin-bottom: 1rem;
+  }
+
+  .word-card {
+    display: flex; align-items: center; gap: 0.85rem;
+    background: rgba(62,160,201,0.08);
+    border: 1.5px dashed var(--child);
+    border-radius: 14px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .word-emoji { font-size: 1.9rem; flex-shrink: 0; }
+  .word-main { flex: 1; }
+  .word-tag {
+    font-size: 0.68rem; font-weight: 700; color: var(--child);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.15rem;
+  }
+  .word-kr { font-weight: 800; color: var(--ink); font-size: 1.05rem; }
+  .word-en {
+    font-size: 0.68rem; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-left: 0.4rem;
+  }
+  .word-def { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+
+  .dialogue { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .line {
+    display: flex; align-items: flex-start; gap: 0.7rem;
+    padding: 0.65rem 0.9rem; border-radius: 14px;
+    background: rgba(124,92,191,0.06);
+  }
+  .line.child { background: rgba(62,160,201,0.08); }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: #fff; font-weight: 700;
+  }
+  .line.mom .avatar { background: var(--mom); }
+  .line.child .avatar { background: var(--child); }
+  .line-text { flex: 1; }
+  .speaker-name { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.15rem; }
+  .line.mom .speaker-name { color: var(--mom); }
+  .line.child .speaker-name { color: var(--child); }
+  .speaker-text { font-size: 0.98rem; line-height: 1.5; color: var(--ink); }
+  .play-btn {
+    flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; border: none;
+    background: #fff; color: var(--ink); cursor: pointer; font-size: 0.85rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.15s;
+  }
+  .play-btn:hover { transform: scale(1.1); }
+  .play-btn:active { transform: scale(0.95); }
+
+  .page-actions {
+    display: flex; gap: 0.75rem; flex-wrap: wrap;
+  }
+  .btn {
+    padding: 0.6rem 1.3rem; border-radius: 999px; font-size: 0.88rem;
+    font-weight: 700; cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .btn-play-all {
+    background: linear-gradient(135deg, var(--mom), var(--child)); color: #fff;
+    box-shadow: 0 4px 16px rgba(124,92,191,0.35);
+  }
+  .btn-play-all:hover { transform: translateY(-2px); }
+  .btn-stop {
+    background: transparent; color: var(--muted); border: 1.5px solid var(--border);
+  }
+  .btn-stop:hover { border-color: var(--mom); color: var(--mom); }
+
+  .nav-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.75rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .nav-btn {
+    padding: 0.55rem 1.1rem; border-radius: 999px; font-size: 0.85rem;
+    font-weight: 700; cursor: pointer; border: 1.5px solid var(--border);
+    background: #fff; color: var(--ink); transition: all 0.2s;
+  }
+  .nav-btn:hover:not(:disabled) { border-color: var(--mom); color: var(--mom); }
+  .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .dots { display: flex; gap: 0.5rem; }
+  .dot {
+    width: 9px; height: 9px; border-radius: 50%; background: var(--border);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .dot.active { background: var(--mom); transform: scale(1.3); }
+
+  .page-count { font-size: 0.8rem; color: var(--muted); }
+
+  .speech-note {
+    max-width: 760px; margin-top: 1.25rem; font-size: 0.8rem; color: var(--muted);
+    text-align: center;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 1.25rem 3% 3rem; }
+    .page-body { padding: 1.25rem 1.25rem 1rem; }
+    .nav-bar { padding: 0.85rem 1.25rem 1.25rem; flex-wrap: wrap; gap: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <a class="back-link" href="index.html">← 포트폴리오로 돌아가기</a>
+    <span class="page-count" id="topPageCount">1 / 5</span>
+  </div>
+
+  <div class="series-nav">
+    <a href="storybook-breakfast.html">← 이전 이야기: 아침밥 실랑이</a>
+    <a href="storybook-index.html">📚 시리즈 목록</a>
+  </div>
+
+  <div class="book-header">
+    <span class="book-tag">AI Storybook · 2화</span>
+    <h1 class="book-title">뽀득뽀득 양치 대작전</h1>
+    <p class="book-sub">엄마와 5살 지우의 양치질 실랑이 · 5장 스토리북</p>
+  </div>
+
+  <div class="book">
+
+    <!-- Page 1 -->
+    <div class="page active" data-page="1">
+      <svg class="illustration" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="night1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#e4e8ff"/>
+            <stop offset="1" stop-color="#cfd6f7"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="300" fill="url(#night1)"/>
+        <circle cx="345" cy="45" r="22" fill="#fff2b8"/>
+        <circle cx="60" cy="40" r="3" fill="#fff"/>
+        <circle cx="90" cy="65" r="2" fill="#fff"/>
+        <circle cx="130" cy="35" r="2.4" fill="#fff"/>
+        <rect x="0" y="235" width="400" height="65" fill="#a9b8e6"/>
+        <!-- Bed -->
+        <rect x="215" y="185" width="150" height="60" rx="16" fill="#fff"/>
+        <rect x="215" y="185" width="150" height="20" rx="10" fill="#3ea0c9"/>
+        <!-- Child under blanket -->
+        <circle cx="255" cy="175" r="24" fill="#ffdcc0"/>
+        <path d="M231 170 Q255 142 279 170 Q275 154 255 152 Q235 154 231 170 Z" fill="#2e2420"/>
+        <circle cx="248" cy="177" r="2.2" fill="#4a3728"/>
+        <circle cx="263" cy="177" r="2.2" fill="#4a3728"/>
+        <path d="M247 188 Q255 184 264 188" stroke="#4a3728" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- Mom holding toothbrush -->
+        <g>
+          <rect x="55" y="150" width="60" height="80" rx="18" fill="#9b7fd4"/>
+          <circle cx="85" cy="120" r="26" fill="#ffd9b8"/>
+          <path d="M60 112 Q85 78 110 112 Q108 96 85 92 Q62 96 60 112 Z" fill="#5b3a29"/>
+          <circle cx="76" cy="120" r="2.4" fill="#4a3728"/>
+          <circle cx="94" cy="120" r="2.4" fill="#4a3728"/>
+          <path d="M76 130 Q85 135 94 130" stroke="#4a3728" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <rect x="105" y="165" width="42" height="9" rx="4" fill="#3ea0c9" transform="rotate(-15 105 165)"/>
+          <rect x="140" y="158" width="14" height="10" rx="2" fill="#fff" transform="rotate(-15 140 158)"/>
+        </g>
+      </svg>
+      <div class="page-body">
+        <div class="page-title">1장. 이제 잘 시간이야</div>
+        <div class="word-card">
+          <span class="word-emoji">🪥</span>
+          <div class="word-main">
+            <div class="word-tag">오늘의 단어</div>
+            <div class="word-kr">양치질<span class="word-en">Brush teeth</span></div>
+            <div class="word-def">이를 깨끗하게 닦는 거예요.</div>
+          </div>
+        </div>
+        <div class="dialogue">
+          <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">지우야, 이제 양치할 시간이야!</div></div><button class="play-btn" data-role="mom" data-text="지우야, 이제 양치할 시간이야!">▶</button></div>
+          <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">싫어요... 저 그냥 잘래요.</div></div><button class="play-btn" data-role="child" data-text="싫어요... 저 그냥 잘래요.">▶</button></div>
+          <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">이 닦아야 편하게 잘 수 있어.</div></div><button class="play-btn" data-role="mom" data-text="이 닦아야 편하게 잘 수 있어.">▶</button></div>
+          <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">귀찮아요. 안 할래요.</div></div><button class="play-btn" data-role="child" data-text="귀찮아요. 안 할래요.">▶</button></div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-play-all">🔊 전체 재생</button>
+          <button class="btn btn-stop">⏹ 정지</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 2 -->
+    <div class="page" data-page="2">
+      <svg class="illustration" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="300" fill="#eafaf6"/>
+        <rect x="0" y="235" width="400" height="65" fill="#cdeee3"/>
+        <rect x="175" y="40" width="16" height="220" fill="#d7ece5"/>
+        <!-- Child running away -->
+        <g>
+          <rect x="255" y="175" width="58" height="58" rx="16" fill="#ffd54f"/>
+          <circle cx="284" cy="150" r="24" fill="#ffdcc0"/>
+          <path d="M260 145 Q284 118 308 145 Q304 128 284 126 Q264 128 260 145 Z" fill="#2e2420"/>
+          <circle cx="276" cy="152" r="2.2" fill="#4a3728"/>
+          <circle cx="292" cy="152" r="2.2" fill="#4a3728"/>
+          <ellipse cx="284" cy="162" rx="6" ry="4" fill="#4a3728"/>
+          <rect x="240" y="190" width="20" height="10" rx="5" fill="#ffdcc0" transform="rotate(-30 240 190)"/>
+        </g>
+        <!-- Mom chasing with toothbrush -->
+        <g>
+          <rect x="60" y="160" width="60" height="75" rx="18" fill="#9b7fd4"/>
+          <circle cx="90" cy="130" r="27" fill="#ffd9b8"/>
+          <path d="M64 122 Q90 88 116 122 Q114 106 90 102 Q66 106 64 122 Z" fill="#5b3a29"/>
+          <circle cx="82" cy="131" r="2.4" fill="#4a3728"/>
+          <circle cx="99" cy="131" r="2.4" fill="#4a3728"/>
+          <ellipse cx="90" cy="142" rx="7" ry="4" fill="#4a3728"/>
+          <rect x="115" y="180" width="45" height="9" rx="4" fill="#3ea0c9" transform="rotate(-8 115 180)"/>
+          <rect x="155" y="175" width="14" height="10" rx="2" fill="#fff" transform="rotate(-8 155 175)"/>
+        </g>
+        <text x="330" y="120" font-size="26" fill="#c74d4d">✗</text>
+      </svg>
+      <div class="page-body">
+        <div class="page-title">2장. 잠깐, 지우야!</div>
+        <div class="word-card">
+          <span class="word-emoji">🚿</span>
+          <div class="word-main">
+            <div class="word-tag">오늘의 단어</div>
+            <div class="word-kr">칫솔<span class="word-en">Toothbrush</span></div>
+            <div class="word-def">이를 닦을 때 쓰는 도구예요.</div>
+          </div>
+        </div>
+        <div class="dialogue">
+          <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">지우야, 잠깐만 이리 와볼래?</div></div><button class="play-btn" data-role="mom" data-text="지우야, 잠깐만 이리 와볼래?">▶</button></div>
+          <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">싫어요! 도망갈 거예요!</div></div><button class="play-btn" data-role="child" data-text="싫어요! 도망갈 거예요!">▶</button></div>
+          <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">이 안 닦으면 이가 아파질 수도 있어.</div></div><button class="play-btn" data-role="mom" data-text="이 안 닦으면 이가 아파질 수도 있어.">▶</button></div>
+          <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">괜찮아요, 안 아파요!</div></div><button class="play-btn" data-role="child" data-text="괜찮아요, 안 아파요!">▶</button></div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-play-all">🔊 전체 재생</button>
+          <button class="btn btn-stop">⏹ 정지</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 3 -->
+    <div class="page" data-page="3">
+      <svg class="illustration" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="300" fill="#f2f7ff"/>
+        <rect x="0" y="235" width="400" height="65" fill="#dbe6f7"/>
+        <!-- Picture card with cavity bug -->
+        <g>
+          <rect x="150" y="180" width="75" height="55" rx="6" fill="#fff" stroke="#c9d6ef" stroke-width="3"/>
+          <circle cx="187" cy="207" r="16" fill="#5b3a4a"/>
+          <circle cx="181" cy="203" r="2.4" fill="#fff"/>
+          <circle cx="193" cy="203" r="2.4" fill="#fff"/>
+          <path d="M181 213 Q187 208 193 213" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <line x1="175" y1="192" x2="171" y2="187" stroke="#5b3a4a" stroke-width="2"/>
+          <line x1="199" y1="192" x2="203" y2="187" stroke="#5b3a4a" stroke-width="2"/>
+        </g>
+        <!-- Mom explaining -->
+        <g>
+          <rect x="35" y="160" width="62" height="75" rx="18" fill="#9b7fd4"/>
+          <circle cx="66" cy="130" r="27" fill="#ffd9b8"/>
+          <path d="M40 122 Q66 88 92 122 Q90 106 66 102 Q42 106 40 122 Z" fill="#5b3a29"/>
+          <circle cx="58" cy="131" r="2.4" fill="#4a3728"/>
+          <circle cx="75" cy="131" r="2.4" fill="#4a3728"/>
+          <path d="M57 142 Q66 147 75 142" stroke="#4a3728" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <rect x="90" y="150" width="40" height="12" rx="6" fill="#ffd9b8"/>
+        </g>
+        <!-- Child scared/curious -->
+        <g>
+          <rect x="290" y="180" width="58" height="55" rx="16" fill="#ffd54f"/>
+          <circle cx="319" cy="155" r="24" fill="#ffdcc0"/>
+          <path d="M295 150 Q319 122 343 150 Q339 134 319 132 Q299 134 295 150 Z" fill="#2e2420"/>
+          <circle cx="311" cy="157" r="3" fill="#4a3728"/>
+          <circle cx="327" cy="157" r="3" fill="#4a3728"/>
+          <ellipse cx="319" cy="168" rx="4" ry="5" fill="#4a3728"/>
+        </g>
+        <text x="248" y="150" font-size="22" fill="#3ea0c9">😱</text>
+      </svg>
+      <div class="page-body">
+        <div class="page-title">3장. 충치 벌레의 비밀</div>
+        <div class="word-card">
+          <span class="word-emoji">🦷</span>
+          <div class="word-main">
+            <div class="word-tag">오늘의 단어</div>
+            <div class="word-kr">충치<span class="word-en">Cavity</span></div>
+            <div class="word-def">단 것을 많이 먹으면 생기는 아픈 이빨이에요.</div>
+          </div>
+        </div>
+        <div class="dialogue">
+          <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">그거 알아? 안 닦으면 조그만 충치 벌레가 이 속에 콕콕 구멍을 뚫는대.</div></div><button class="play-btn" data-role="mom" data-text="그거 알아? 안 닦으면 조그만 충치 벌레가 이 속에 콕콕 구멍을 뚫는대.">▶</button></div>
+          <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">헉, 진짜요? 무서워요...</div></div><button class="play-btn" data-role="child" data-text="헉, 진짜요? 무서워요...">▶</button></div>
+          <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">맞아! 근데 뽀득뽀득 닦으면 벌레가 놀라서 도망간대.</div></div><button class="play-btn" data-role="mom" data-text="맞아! 근데 뽀득뽀득 닦으면 벌레가 놀라서 도망간대.">▶</button></div>
+          <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">그럼... 저도 닦을래요!</div></div><button class="play-btn" data-role="child" data-text="그럼... 저도 닦을래요!">▶</button></div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-play-all">🔊 전체 재생</button>
+          <button class="btn btn-stop">⏹ 정지</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 4 -->
+    <div class="page" data-page="4">
+      <svg class="illustration" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="300" fill="#eef8ff"/>
+        <rect x="0" y="235" width="400" height="65" fill="#cfe8f5"/>
+        <!-- Mirror -->
+        <rect x="230" y="55" width="130" height="150" rx="14" fill="#fff" stroke="#bcdcee" stroke-width="6"/>
+        <!-- Sink -->
+        <ellipse cx="295" cy="230" rx="70" ry="18" fill="#fff"/>
+        <rect x="225" y="215" width="140" height="20" fill="#dcecf5"/>
+        <!-- Timer -->
+        <circle cx="70" cy="70" r="24" fill="#fff" stroke="#3ea0c9" stroke-width="4"/>
+        <line x1="70" y1="70" x2="70" y2="56" stroke="#3ea0c9" stroke-width="3" stroke-linecap="round"/>
+        <line x1="70" y1="70" x2="80" y2="70" stroke="#3ea0c9" stroke-width="3" stroke-linecap="round"/>
+        <text x="55" y="115" font-size="14" fill="#3ea0c9" font-weight="700">30초</text>
+        <!-- Child brushing at sink -->
+        <g>
+          <rect x="255" y="175" width="58" height="55" rx="16" fill="#ffd54f"/>
+          <circle cx="284" cy="150" r="24" fill="#ffdcc0"/>
+          <path d="M260 145 Q284 118 308 145 Q304 128 284 126 Q264 128 260 145 Z" fill="#2e2420"/>
+          <circle cx="276" cy="152" r="2.2" fill="#4a3728"/>
+          <circle cx="292" cy="152" r="2.2" fill="#4a3728"/>
+          <path d="M276 162 Q284 167 292 162" stroke="#4a3728" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <rect x="248" y="155" width="34" height="8" rx="4" fill="#3ea0c9" transform="rotate(-20 248 155)"/>
+          <circle cx="270" cy="158" r="4" fill="#fff" opacity="0.85"/>
+          <circle cx="278" cy="150" r="3" fill="#fff" opacity="0.85"/>
+        </g>
+        <!-- Mom cheering -->
+        <g>
+          <rect x="90" y="165" width="58" height="70" rx="18" fill="#9b7fd4"/>
+          <circle cx="119" cy="138" r="26" fill="#ffd9b8"/>
+          <path d="M95 130 Q119 96 143 130 Q141 114 119 110 Q97 114 95 130 Z" fill="#5b3a29"/>
+          <circle cx="111" cy="139" r="2.4" fill="#4a3728"/>
+          <circle cx="127" cy="139" r="2.4" fill="#4a3728"/>
+          <path d="M108 148 Q119 156 130 148" stroke="#4a3728" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <div class="page-body">
+        <div class="page-title">4장. 뽀득뽀득 30초 게임</div>
+        <div class="word-card">
+          <span class="word-emoji">⏱️</span>
+          <div class="word-main">
+            <div class="word-tag">오늘의 단어</div>
+            <div class="word-kr">타이머<span class="word-en">Timer</span></div>
+            <div class="word-def">시간이 얼마나 지났는지 알려주는 도구예요.</div>
+          </div>
+        </div>
+        <div class="dialogue">
+          <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">자, 뽀득뽀득 30초 게임 시작! 노래 부르면서 닦자~</div></div><button class="play-btn" data-role="mom" data-text="자, 뽀득뽀득 30초 게임 시작! 노래 부르면서 닦자~">▶</button></div>
+          <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">위아래로 뽀득뽀득!</div></div><button class="play-btn" data-role="child" data-text="위아래로 뽀득뽀득!">▶</button></div>
+          <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">우와, 지우 정말 잘한다! 조금만 더!</div></div><button class="play-btn" data-role="mom" data-text="우와, 지우 정말 잘한다! 조금만 더!">▶</button></div>
+          <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">다 됐다! 짜잔!</div></div><button class="play-btn" data-role="child" data-text="다 됐다! 짜잔!">▶</button></div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-play-all">🔊 전체 재생</button>
+          <button class="btn btn-stop">⏹ 정지</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 5 -->
+    <div class="page" data-page="5">
+      <svg class="illustration" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sky5b" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#eaf6ff"/>
+            <stop offset="1" stop-color="#d6ecff"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="300" fill="url(#sky5b)"/>
+        <rect x="0" y="235" width="400" height="65" fill="#cfe8f5"/>
+        <!-- Mirror behind child -->
+        <rect x="215" y="70" width="130" height="140" rx="14" fill="#fff" stroke="#bcdcee" stroke-width="6"/>
+        <!-- Mom and child high five -->
+        <g>
+          <rect x="90" y="150" width="60" height="80" rx="18" fill="#9b7fd4"/>
+          <circle cx="120" cy="120" r="27" fill="#ffd9b8"/>
+          <path d="M94 112 Q120 78 146 112 Q144 96 120 92 Q96 96 94 112 Z" fill="#5b3a29"/>
+          <path d="M108 118 Q112 114 116 118" stroke="#4a3728" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M124 118 Q128 114 132 118" stroke="#4a3728" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M108 132 Q120 140 132 132" stroke="#4a3728" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <rect x="140" y="150" width="45" height="14" rx="7" fill="#ffd9b8" transform="rotate(-25 140 150)"/>
+        </g>
+        <g>
+          <rect x="245" y="165" width="58" height="65" rx="16" fill="#ffd54f"/>
+          <circle cx="274" cy="140" r="24" fill="#ffdcc0"/>
+          <path d="M250 135 Q274 107 298 135 Q294 119 274 117 Q254 119 250 135 Z" fill="#2e2420"/>
+          <path d="M265 141 Q269 137 273 141" stroke="#4a3728" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M277 141 Q281 137 285 141" stroke="#4a3728" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M263 150 Q274 162 285 150" stroke="#4a3728" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <rect x="220" y="163" width="45" height="14" rx="7" fill="#ffdcc0" transform="rotate(20 220 163)"/>
+        </g>
+        <text x="160" y="150" font-size="26" fill="#3ea0c9">✨</text>
+        <text x="300" y="100" font-size="20" fill="#3ea0c9">✨</text>
+      </svg>
+      <div class="page-body">
+        <div class="page-title">5장. 반짝반짝 빛나요!</div>
+        <div class="word-card">
+          <span class="word-emoji">✨</span>
+          <div class="word-main">
+            <div class="word-tag">오늘의 단어</div>
+            <div class="word-kr">반짝반짝<span class="word-en">Sparkling</span></div>
+            <div class="word-def">아주 깨끗하고 빛나는 모양이에요.</div>
+          </div>
+        </div>
+        <div class="dialogue">
+          <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">엄마, 저 이빨이 반짝반짝해요!</div></div><button class="play-btn" data-role="child" data-text="엄마, 저 이빨이 반짝반짝해요!">▶</button></div>
+          <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">우와, 우리 지우 이빨 요정이 정말 좋아하겠다!</div></div><button class="play-btn" data-role="mom" data-text="우와, 우리 지우 이빨 요정이 정말 좋아하겠다!">▶</button></div>
+          <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">내일도 뽀득뽀득 할래요!</div></div><button class="play-btn" data-role="child" data-text="내일도 뽀득뽀득 할래요!">▶</button></div>
+          <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">그래! 우리 지우 정말 최고야.</div></div><button class="play-btn" data-role="mom" data-text="그래! 우리 지우 정말 최고야.">▶</button></div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-play-all">🔊 전체 재생</button>
+          <button class="btn btn-stop">⏹ 정지</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-bar">
+      <button class="nav-btn" id="prevBtn">← 이전</button>
+      <div class="dots" id="dots"></div>
+      <button class="nav-btn" id="nextBtn">다음 →</button>
+    </div>
+  </div>
+
+  <p class="speech-note">🔊 음성 재생은 브라우저 내장 TTS(Web Speech API)를 사용합니다. 엄마와 지우 목소리는 음높이·속도를 다르게 설정했습니다. (Chrome/Edge 권장)</p>
+
+<script>
+  const pages = Array.from(document.querySelectorAll('.page'));
+  const dotsWrap = document.getElementById('dots');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const topPageCount = document.getElementById('topPageCount');
+  let current = 0;
+
+  pages.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
+  });
+  const dots = Array.from(dotsWrap.children);
+
+  function goTo(i) {
+    if (i < 0 || i >= pages.length) return;
+    stopSpeech();
+    pages[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = i;
+    pages[current].classList.add('active');
+    dots[current].classList.add('active');
+    topPageCount.textContent = (current + 1) + ' / ' + pages.length;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === pages.length - 1;
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+  goTo(0);
+
+  const VOICE_PRESET = {
+    mom:   { pitch: 1.0, rate: 0.95 },
+    child: { pitch: 1.7, rate: 1.15 }
+  };
+
+  let koVoice = null;
+  function loadVoices() {
+    const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    koVoice = voices.find(v => v.lang === 'ko-KR') || voices.find(v => v.lang && v.lang.startsWith('ko')) || null;
+  }
+  if (window.speechSynthesis) {
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  function speakLine(text, role, onend) {
+    if (!window.speechSynthesis) { if (onend) onend(); return; }
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'ko-KR';
+    if (koVoice) utter.voice = koVoice;
+    const preset = VOICE_PRESET[role] || VOICE_PRESET.mom;
+    utter.pitch = preset.pitch;
+    utter.rate = preset.rate;
+    if (onend) utter.onend = onend;
+    window.speechSynthesis.speak(utter);
+  }
+
+  function stopSpeech() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  }
+
+  document.querySelectorAll('.play-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      stopSpeech();
+      speakLine(btn.dataset.text, btn.dataset.role);
+    });
+  });
+
+  document.querySelectorAll('.btn-play-all').forEach(btn => {
+    btn.addEventListener('click', () => {
+      stopSpeech();
+      const page = btn.closest('.page');
+      const lineBtns = Array.from(page.querySelectorAll('.play-btn'));
+      let idx = 0;
+      function next() {
+        if (idx >= lineBtns.length) return;
+        const b = lineBtns[idx++];
+        speakLine(b.dataset.text, b.dataset.role, next);
+      }
+      next();
+    });
+  });
+
+  document.querySelectorAll('.btn-stop').forEach(btn => {
+    btn.addEventListener('click', stopSpeech);
+  });
+</script>
+
+</body>
+</html>

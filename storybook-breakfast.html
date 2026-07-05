@@ -67,6 +67,34 @@
     font-size: 1.15rem; font-weight: 800; color: var(--mom); margin-bottom: 1rem;
   }
 
+  .word-card {
+    display: flex; align-items: center; gap: 0.85rem;
+    background: rgba(255,138,61,0.08);
+    border: 1.5px dashed var(--child);
+    border-radius: 14px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .word-emoji { font-size: 1.9rem; flex-shrink: 0; }
+  .word-main { flex: 1; }
+  .word-tag {
+    font-size: 0.68rem; font-weight: 700; color: var(--child);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.15rem;
+  }
+  .word-kr { font-weight: 800; color: var(--ink); font-size: 1.05rem; }
+  .word-en {
+    font-size: 0.68rem; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-left: 0.4rem;
+  }
+  .word-def { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+
+  .series-nav {
+    width: 100%; max-width: 760px; display: flex; justify-content: space-between;
+    gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; font-size: 0.85rem;
+  }
+  .series-nav a { color: var(--mom); text-decoration: none; font-weight: 600; }
+  .series-nav a:hover { text-decoration: underline; }
+
   .dialogue { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
   .line {
     display: flex; align-items: flex-start; gap: 0.7rem;
@@ -154,6 +182,11 @@
     <span class="page-count" id="topPageCount">1 / 5</span>
   </div>
 
+  <div class="series-nav">
+    <a href="storybook-index.html">📚 시리즈 목록</a>
+    <a href="storybook-toothbrush.html">다음 이야기: 양치질 편 →</a>
+  </div>
+
   <div class="book-header">
     <span class="book-tag">AI Storybook</span>
     <h1 class="book-title">시금치 당근 실랑이</h1>
@@ -214,6 +247,14 @@
       </svg>
       <div class="page-body">
         <div class="page-title">1장. 오늘 아침 반찬은?</div>
+        <div class="word-card">
+          <span class="word-emoji">🥬</span>
+          <div class="word-main">
+            <div class="word-tag">오늘의 단어</div>
+            <div class="word-kr">시금치<span class="word-en">Spinach</span></div>
+            <div class="word-def">초록색 잎채소예요. 몸을 튼튼하게 해줘요.</div>
+          </div>
+        </div>
         <div class="dialogue">
           <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">지우야, 아침 다 됐어! 오늘은 시금치나물이랑 당근볶음이야~</div></div><button class="play-btn" data-role="mom" data-text="지우야, 아침 다 됐어! 오늘은 시금치나물이랑 당근볶음이야~">▶</button></div>
           <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">으... 저건 안 먹을래요.</div></div><button class="play-btn" data-role="child" data-text="으... 저건 안 먹을래요.">▶</button></div>
@@ -257,6 +298,14 @@
       </svg>
       <div class="page-body">
         <div class="page-title">2장. 한 입만 먹어볼까?</div>
+        <div class="word-card">
+          <span class="word-emoji">🥕</span>
+          <div class="word-main">
+            <div class="word-tag">오늘의 단어</div>
+            <div class="word-kr">당근<span class="word-en">Carrot</span></div>
+            <div class="word-def">주황색 채소예요. 아삭아삭 씹는 맛이 좋아요.</div>
+          </div>
+        </div>
         <div class="dialogue">
           <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">한 입만 먹어볼래? 진짜 맛있어.</div></div><button class="play-btn" data-role="mom" data-text="한 입만 먹어볼래? 진짜 맛있어.">▶</button></div>
           <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">싫어요! 안 먹을 거예요!</div></div><button class="play-btn" data-role="child" data-text="싫어요! 안 먹을 거예요!">▶</button></div>
@@ -305,6 +354,14 @@
       </svg>
       <div class="page-body">
         <div class="page-title">3장. 토끼의 비밀</div>
+        <div class="word-card">
+          <span class="word-emoji">🐰</span>
+          <div class="word-main">
+            <div class="word-tag">오늘의 단어</div>
+            <div class="word-kr">토끼<span class="word-en">Rabbit</span></div>
+            <div class="word-def">깡충깡충 잘 뛰는 귀여운 동물이에요.</div>
+          </div>
+        </div>
         <div class="dialogue">
           <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">그거 알아? 토끼는 당근을 먹어서 그렇게 폴짝폴짝 잘 뛰는 거래.</div></div><button class="play-btn" data-role="mom" data-text="그거 알아? 토끼는 당근을 먹어서 그렇게 폴짝폴짝 잘 뛰는 거래.">▶</button></div>
           <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">진짜요? 나도 그럼 더 높이 뛸 수 있어요?</div></div><button class="play-btn" data-role="child" data-text="진짜요? 나도 그럼 더 높이 뛸 수 있어요?">▶</button></div>
@@ -348,6 +405,14 @@
       </svg>
       <div class="page-body">
         <div class="page-title">4장. 슝~ 비행기가 나갑니다</div>
+        <div class="word-card">
+          <span class="word-emoji">✈️</span>
+          <div class="word-main">
+            <div class="word-tag">오늘의 단어</div>
+            <div class="word-kr">비행기<span class="word-en">Airplane</span></div>
+            <div class="word-def">하늘을 날아다니는 커다란 탈것이에요.</div>
+          </div>
+        </div>
         <div class="dialogue">
           <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">자, 비행기 출발합니다~ 슈웅!</div></div><button class="play-btn" data-role="mom" data-text="자, 비행기 출발합니다~ 슈웅!">▶</button></div>
           <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">히히, 착륙 완료!</div></div><button class="play-btn" data-role="child" data-text="히히, 착륙 완료!">▶</button></div>
@@ -398,6 +463,14 @@
       </svg>
       <div class="page-body">
         <div class="page-title">5장. 다 먹었어요!</div>
+        <div class="word-card">
+          <span class="word-emoji">🌟</span>
+          <div class="word-main">
+            <div class="word-tag">오늘의 단어</div>
+            <div class="word-kr">자랑스럽다<span class="word-en">Proud</span></div>
+            <div class="word-def">무언가를 잘 해내서 마음이 뿌듯한 느낌이에요.</div>
+          </div>
+        </div>
         <div class="dialogue">
           <div class="line child"><div class="avatar">지</div><div class="line-text"><div class="speaker-name">지우</div><div class="speaker-text">엄마, 저 다 먹었어요! 하나도 안 남았어요!</div></div><button class="play-btn" data-role="child" data-text="엄마, 저 다 먹었어요! 하나도 안 남았어요!">▶</button></div>
           <div class="line mom"><div class="avatar">엄</div><div class="line-text"><div class="speaker-name">엄마</div><div class="speaker-text">우와, 우리 지우 최고! 이제 힘이 세지고 눈도 좋아지겠다.</div></div><button class="play-btn" data-role="mom" data-text="우와, 우리 지우 최고! 이제 힘이 세지고 눈도 좋아지겠다.">▶</button></div>
